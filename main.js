@@ -250,5 +250,12 @@ app.post('/prroduct/addcategory', async (req, res, next)=>{
 
 // Remove the Category column
 app.delete('/product/removecategory', async(req, res, next)=>{
-    
+        try {
+            const alterQuery = `ALTER TABLE Products drop COLUMN Category;`;
+            const [result] = await db.execute(alterQuery);
+            return res.status(200).json({message: "Category column removed successfully!",info: result.info })
+        } catch (error) {
+        return res.status(500).json({ message: "Failed to remove category column", error: error.message });
+    }
+
 })
